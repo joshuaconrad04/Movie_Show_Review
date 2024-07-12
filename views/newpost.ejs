@@ -15,19 +15,54 @@
     </h1>
 
     <% if (locals.post) { %>
-      <form id="editForm" method="post" action="/api/posts/<%=post.id%>">
+      <form id="editForm" method="patch" action="/editpost/<%=post.review_id%>">
         <input type="text" name="title" value="<%=post.title %>">
-        <textarea name="content" rows="10"><%=post.content %></textarea>
-        <input type="text" name="author" value="<%=post.author %>">
+        <textarea name="content" rows="10"><%=post.review_text %></textarea>
+        <!-- <input type="text" name="author" value="<%=//post.author %>"> -->
+
+        <label for="rating">Current rating:</label>
+        <% selectedRating = post.rating %>
+        <select id="rating" name="rating">
+          <option value="0" <%= selectedRating == 0 ? 'selected' : '' %>>0</option>
+          <option value="0.5" <%= selectedRating == 0.5 ? 'selected' : '' %>>0.5</option>
+          <option value="1" <%= selectedRating == 1 ? 'selected' : '' %>>1</option>
+          <option value="1.5" <%= selectedRating == 1.5 ? 'selected' : '' %>>1.5</option>
+          <option value="2" <%= selectedRating == 2 ? 'selected' : '' %>>2</option>
+          <option value="2.5" <%= selectedRating == 2.5 ? 'selected' : '' %>>2.5</option>
+          <option value="3" <%= selectedRating == 3 ? 'selected' : '' %>>3</option>
+          <option value="3.5" <%= selectedRating == 3.5 ? 'selected' : '' %>>3.5</option>
+          <option value="4" <%= selectedRating == 4 ? 'selected' : '' %>>4</option>
+          <option value="4.5" <%= selectedRating == 4.5 ? 'selected' : '' %>>4.5</option>
+          <option value="5" <%= selectedRating == 5 ? 'selected' : '' %>>5</option>
+      </select>
+
+
         <button class="full-width" type="submit">
           <%= submit %>
         </button>
       </form>
       <% } else {%>
-        <form id="newPostForm" method="post" action="/api/posts">
+        <form id="newPostForm" method="post" action="/post">
           <input type="text" name="title" placeholder="Title" required>
-          <textarea name="content" placeholder="Content" required rows="10"></textarea>
+          <textarea name="review" placeholder="Review" required rows="10"></textarea>
           <input type="text" name="author" placeholder="Author" required>
+          <label for="rating">Select a rating for the movie:</label>
+    <select id="rating" name="rating">
+        <option value="0">0</option>
+        <option value="0.5">0.5</option>
+        <option value="1">1</option>
+        <option value="1.5">1.5</option>
+        <option value="2">2</option>
+        <option value="2.5">2.5</option>
+        <option value="3">3</option>
+        <option value="3.5">3.5</option>
+        <option value="4">4</option>
+        <option value="4.5">4.5</option>
+        <option value="5">5</option>
+    </select>
+
+    <br>
+    <br>
           <button class="full-width" type="submit">
             <%= submit %>
           </button>
