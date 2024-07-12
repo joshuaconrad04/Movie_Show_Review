@@ -4,14 +4,58 @@
 
 <title><%= title %></title>
 
-<a href="/search">About</a>
+
+<!-- LINK TO SEARCH PAGE SO I CAN USE IT LATER -->
+<!-- <a href="/search">About</a> -->
+
+
+<div id="Intro">
+  <h1> Welcome to our movie/show review site </h1>  
+  <br>
+  <h3>On this site you can add, edit and view our thoughts on different movies we've watched!  
+
+  </h2> 
+
+<!-- SOMEWHERE HERE I NEED TO MAKE A NEW POST BUTTON, MAYBE USE BOOTSTRAP, MAYBE NOT -->
+<a id="newPostBtn" href="/new">New Post</a>
+
+    <div class="container">
+     
+      <!-- this is where you can fetch and display all posts -->
+      <ul id="postsList">
+
+      <% if (locals.posts){ %>
+        <% posts.forEach(post=> { %>
+          <li>
+            <h2>
+              <%=post.title%>
+            </h2>
+            <small>
+              <%=post.created_at %>
+            </small>
+            <p>
+              <%=post.review_text%>
+            </p>
+            <!-- <small>By: <%=users[0].user_id%> </small> -->
+            <a class="edit" href="/edit/<%= post.review_id %>">Edit</a>
+            <a class="delete" href="/delete/<%= post.review_id %>">Delete</a>
+          </li>
+          <% }); %>
+
+        <% } %>
+      </ul>
+    </div>
+  
+
+
+</div>
 
 
 
 
 
+<br>
 
-
-
-
+<!-- LINK TO PICTURE YENSSI WANTS -->
+<!-- <img src="/assets/yenssi.jpeg" alt="pink-cowboy hat" width="500" height="300"> -->
 <%- include('partials/footer.ejs'); -%>
