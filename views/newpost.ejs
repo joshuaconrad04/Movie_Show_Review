@@ -15,7 +15,7 @@
     </h1>
 
     <% if (locals.post) { %>
-      <form id="editForm" method="patch" action="/editpost/<%=post.review_id%>">
+      <form id="editForm" method="put" action="/editpost/<%=post.review_id%>">
         <input type="text" name="title" value="<%=post.title %>">
         <textarea name="content" rows="10"><%=post.review_text %></textarea>
         <!-- <input type="text" name="author" value="<%=//post.author %>"> -->

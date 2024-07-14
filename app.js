@@ -8,6 +8,8 @@ const port = 3000;
 const __dirname = "Movie_Show_Reviews";
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+
 app.use(express.static("public"));
 
  app.set('view engine', 'ejs');
@@ -46,64 +48,34 @@ app.get("/new", (req, res) => {
   res.render("newpost.ejs", { heading: "New Post", submit: "Create Post" });
 });
 
+
 //to go to edit a new post page
-app.get("/edit/:id", async(req, res) => {
+app.put("/edit/:id", async(req, res) => {
 
-  const postID =req.params.id;
-console.log(postID);
-
-
-  try {
-
-   const result = await db.query("SELECT * FROM product_reviews WHERE review_id = $1 ",[postID]);
-  
- 
-
-    res.render("newpost.ejs", {
-      heading: "Edit Post",
-      submit: "Edit Post",
-      post: result.rows[0],
-
-
-    });
-  } catch (err) {
-    console.log(err);
-  }
-
-
-});
-
-
-//To edit a post
-app.patch("/editpost/:id", async (req, res) => {
   const review_id = req.params.id;
-  const title = post.title;
-  const review = post.review;
-  const rating = post.rating;
 
+  const title =  req.body.title;
+  const review=req.body.review;
+  //holds the name value for now;tit
+  const rating = req.body.rating;
+
+  console.log(review_id);
   console.log(title);
   console.log(review);
   console.log(rating);
 
-
-  
-
-  try {
+//pull the title, review, rating
+  try { 
     const editPost = await db.query(
-      "UPDATE product_reviews SET title = $1, review_text = $2, rating = $3 WHERE review_id = $4",
-      [title, review, rating, review_id]
-    );
+        "UPDATE product_reviews SET title = $1, review_text = $2, rating = $3 WHERE review_id = $4",
+        [title, review, rating, review_id]
+      );
 
     if (editPost.rowCount === 0) {
-      // No rows were updated, which means the review_id does not exist
       return res.status(404).json({ error: "Review not found" });
     }
 
-    console.log(`Post updated successfully with review_id: ${review_id}`);
-   // res.status(200).json({ message: "Post updated successfully" });
-    res.redirect("/");
-
-
+    res.status(200).json({ message: "Post updated successfully" });
   } catch (err) {
     console.error('Error updating post:', err);
     res.status(500).json({ error: "Internal Server Error" });
@@ -114,11 +86,11 @@ app.patch("/editpost/:id", async (req, res) => {
 // Create a new post
 app.post("/post", async (req, res) => {
 
- const title =  req.body.title;
-const review=req.body.review;
-//holds the name value for now;
-const user_name= req.body.author;
-const rating = req.body.rating;
+  const title =  req.body.title;
+  const review=req.body.review;
+  //holds the name value for now;
+  const user_name= req.body.author;
+  const rating = req.body.rating;
 
 console.log(title);
 console.log(review);
@@ -143,9 +115,21 @@ console.log(rating);
 });
 
 // Delete a post
-app.get("/delete/:id",  (req, res) => {
+app.get("/delete/:id",  async(req, res) => {
+  const postId=req.params.id;
+
+
+
+
   try {
-   
+
+    await db.query(
+      "DELETE FROM product_reviews WHERE review_id=$1",
+      [postId]
+    );
+
+
+
   } catch (error) {
     
   }

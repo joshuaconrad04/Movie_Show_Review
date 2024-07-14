@@ -1,64 +1,116 @@
 <%- include('partials/header.ejs'); -%>
 
-
-
 <title><%= title %></title>
 
+<div class="container">
+  <div id="Intro">
+    <h1> Welcome to our movie/show review site </h1>
+    <br>
+    <h3>On this site you can add, edit and view our thoughts on different movies we've watched!</h3>
+    <a id="newPostBtn" href="/new">New Post</a>
+  </div>
 
-<!-- LINK TO SEARCH PAGE SO I CAN USE IT LATER -->
-<!-- <a href="/search">About</a> -->
+  <ul id="postsList">
+    <% if (locals.posts){ %>
+      <% posts.forEach(post => { %>
+        <li data-id="<%= post.review_id %>">
+          <h2 class="post-title">
+            <%= post.title %>
+          </h2>
+          <small>
+            <%= post.created_at %>
+          </small>
+          <small class="post-rating">
+            <%= ` Review by ${post.name}. Rating: ${post.rating}/5.0` %>
+          </small>
+          <p class="post-review-text">
+            <%= post.review_text %>
+          </p>
+          <a class="edit" href="javascript:void(0);" data-id="<%= post.review_id %>">Edit</a>
 
-
-    <div class="container">
-
-      <div id="Intro">
-        <h1> Welcome to our movie/show review site </h1>  
-        <br>
-        <h3>On this site you can add, edit and view our thoughts on different movies we've watched!  
-      
-        </h2> 
-      
-      <!-- SOMEWHERE HERE I NEED TO MAKE A NEW POST BUTTON, MAYBE USE BOOTSTRAP, MAYBE NOT -->
-      <a id="newPostBtn" href="/new">New Post</a>
-      
-      </div>
-
-
-
-     
-      <!-- this is where you can fetch and display all posts -->
-      <ul id="postsList">
-
-      <% if (locals.posts){ %>
-        <% posts.forEach(post=> { %>
-          <li>
-            <h2>
-              <%=post.title%>
-            </h2>
-            <small>
-              <%=post.created_at %>  
-            </small>
-            <small>
-             <%= ` Review by ${post.name}.                               Rating: ${post.rating}/5.0` %>
-            </small>
-            <p>
-              <%=post.review_text%>
-            </p>
-            <!-- <small>By: <%=users[0].user_id%> </small> -->
-            <a class="edit" href="/edit/<%= post.review_id %>">Edit</a>
-    <!-- this one Ill fix and make delete right away and later add security        -->
-     <a class="delete" href="/delete/<%= post.review_id %>">Delete</a>
-          </li>
-          <% }); %>
-
-        <% } %>
-      </ul>
-    </div>
-  
+          
+          <a class="delete" href="/delete/<%= post.review_id %>">Delete</a>
 
 
-<br>
+        </li>
+      <% }); %>
+    <% } %>
+  </ul>
+</div>
 
-<!-- LINK TO PICTURE YENSSI WANTS -->
-<!-- <img src="/assets/yenssi.jpeg" alt="pink-cowboy hat" width="500" height="300"> -->
+<script>
+ document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.edit').forEach(editBtn => {
+    editBtn.addEventListener('click', function() {
+      const postId = this.getAttribute('data-id');
+      const postLi = document.querySelector(`li[data-id='${postId}']`);
+      const title = postLi.querySelector('.post-title').innerText;
+      const reviewText = postLi.querySelector('.post-review-text').innerText;
+      const ratingText = postLi.querySelector('.post-rating').innerText.match(/Rating: (\d+(\.\d+)?)/)[1];
+
+      postLi.innerHTML = `
+        <form method="POST" action="/edit/${postId}" class="editForm">
+          <input type="text" name="title" value="${title}">
+          <textarea name="review" rows="10">${reviewText}</textarea>
+          <select name="rating">
+            <option value="0" ${ratingText == 0 ? 'selected' : ''}>0</option>
+            <option value="0.5" ${ratingText == 0.5 ? 'selected' : ''}>0.5</option>
+            <option value="1" ${ratingText == 1 ? 'selected' : ''}>1</option>
+            <option value="1.5" ${ratingText == 1.5 ? 'selected' : ''}>1.5</option>
+            <option value="2" ${ratingText == 2 ? 'selected' : ''}>2</option>
+            <option value="2.5" ${ratingText == 2.5 ? 'selected' : ''}>2.5</option>
+            <option value="3" ${ratingText == 3 ? 'selected' : ''}>3</option>
+            <option value="3.5" ${ratingText == 3.5 ? 'selected' : ''}>3.5</option>
+            <option value="4" ${ratingText == 4 ? 'selected' : ''}>4</option>
+            <option value="4.5" ${ratingText == 4.5 ? 'selected' : ''}>4.5</option>
+            <option value="5" ${ratingText == 5 ? 'selected' : ''}>5</option>
+          </select>
+          <button type="submit">Save</button>
+        </form>
+      `;
+
+      // Change form method to PUT using JavaScript
+      const editForm = postLi.querySelector('.editForm');
+      editForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const formData = new FormData(editForm);
+        const data = {
+  title: formData.get('title'),
+  review: formData.get('review'),
+  rating: formData.get('rating')
+};
+
+
+        try {
+          const response = await fetch(`/edit/${postId}`, {
+  method: 'PUT',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(data)
+
+});
+          if (response.ok) {
+            window.location.reload();
+          } else {
+            const errorData = await response.json();
+            console.error('Error:', errorData);
+          }
+        } catch (err) {
+          console.error('Error:', err);
+        }
+      });
+    });
+  });
+});
+
+
+
+
+
+
+
+
+</script>
+
 <%- include('partials/footer.ejs'); -%>
