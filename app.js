@@ -30,11 +30,9 @@ app.get('/', async(req, res) => {
 
   try {
     const result = (await db.query("SELECT * FROM users INNER JOIN product_reviews ON users.id = product_reviews.user_id ORDER BY review_id ASC")).rows;
-    const user=(await db.query("SELECT * FROM users ORDER BY id ASC")).rows;
     res.render("index", {
       title:'home',
       posts: result,
-      users:user
     });
   } catch (err) {
     console.log(err);
@@ -42,6 +40,46 @@ app.get('/', async(req, res) => {
 
 });
 
+//To sort
+app.get('/sort', async(req, res) => {
+const sortBy = req.query["sort"]
+console.log(sortBy);
+
+  try {
+    // Handle sort by title
+    if (sortBy == 'title') {
+      console.log("Sorted by Title");
+      const result = (await db.query("SELECT * FROM users INNER JOIN product_reviews ON users.id = product_reviews.user_id ORDER BY title ASC")).rows;
+    res.render("index", {
+      title:'home',
+      posts: result,
+    });
+    } else if (sortBy == 'rating') {
+// Handle sort by rating
+      console.log("Sorted by Rating");
+
+      const result = (await db.query("SELECT * FROM users INNER JOIN product_reviews ON users.id = product_reviews.user_id ORDER BY rating DESC")).rows;
+    res.render("index", {
+      title:'home',
+      posts: result,
+    });
+  }
+   else if (sortBy === 'user') {
+      console.log("Sorted by User");
+      const result = (await db.query("SELECT * FROM users INNER JOIN product_reviews ON users.id = product_reviews.user_id ORDER BY user_id ASC")).rows;
+    res.render("index", {
+      title:'home',
+      posts: result,
+    });
+      // Handle sort by user
+    } 
+    
+  }
+    catch (err) {
+    console.log(err);
+  }
+
+});
 
 //to create a new post
 app.get("/new", (req, res) => {

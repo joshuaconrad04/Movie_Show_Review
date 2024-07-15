@@ -4,10 +4,24 @@
 
 <div class="container">
   <div id="Intro">
-    <h2> Welcome to Josh and Yenssi's movie/show review site </h2>
-    <br>
-    <h3>On this site you can add, edit and view our thoughts on different movies we've watched!</h3>
+    <h1> Welcome to Josh and Yenssi's movie/show review site </h2>
+    <!-- <br> -->
+    <!-- <h3>On this site you can add, edit and view our thoughts on different movies we've watched!</h3> -->
+    <!-- <a id="newPostBtn" href="/new">New Post</a> -->
+
+    <form id="sort" method="get" action="/sort">
+      <form id="sort" method="get" action="/sort">
+        <button  id="newPostBtn"  type="submit" name="sort" value="title">Sort By Title</button>
+        <button id="newPostBtn"   type="submit" name="sort" value="rating">Sort By Rating</button>
+        <button  id="newPostBtn" type="submit" name="sort" value="user">Sort By User</button>
+    </form>
     <a id="newPostBtn" href="/new">New Post</a>
+
+  </form>
+  
+
+ 
+
   </div>
 
   <ul id="postsList">
