@@ -115,11 +115,8 @@ console.log(rating);
 });
 
 // Delete a post
-app.get("/delete/:id",  async(req, res) => {
+app.delete("/delete/:id",  async(req, res) => {
   const postId=req.params.id;
-
-
-
 
   try {
 
@@ -128,7 +125,7 @@ app.get("/delete/:id",  async(req, res) => {
       [postId]
     );
 
-
+res.redirect("/");
 
   } catch (error) {
     
