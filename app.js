@@ -170,7 +170,6 @@ res.redirect("/");
   }
 });
 
-
 app.get('/reviews', (req, res) => {
   res.render('index', { title: 'Home' });
 });
@@ -178,9 +177,6 @@ app.get('/reviews', (req, res) => {
 app.get('/search', (req, res) => {
   res.render('search', { title: 'About Us' });
 });
-
-
-
 
 
 app.listen(port, () => {

@@ -18,6 +18,9 @@ li,
 form,
 input,
 textarea,
+
+
+
 a {
   margin: 0;
   padding: 0;
@@ -26,15 +29,15 @@ a {
 }
 
 body {
-  background-color: #f7f9fc;
-  color: #333;
+  background-color: #333;
+  color: white;
   line-height: 1.6;
 }
 
 .container {
   max-width: 800px;
   margin: 50px auto;
-  background-color: #fff;
+  background-color: #333;
   padding: 20px 40px;
   border-radius: 8px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -43,13 +46,13 @@ body {
 h1 {
   font-size: 2.5em;
   margin-bottom: 20px;
-  color: #444;
+  color: white;
 }
 
 h2 {
   font-size: 1.5em;
   margin-bottom: 10px;
-  color: #555;
+  color: white;
 }
 
 p,
